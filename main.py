@@ -43,10 +43,15 @@ def wordcloud_for_album(album_link):
 
     album_lyrics = ' '.join([track_lyrics for track_lyrics in song_lyrics.values()])
 
-    for song, lyrics in song_lyrics.items():
-        WordCloud().generate(lyrics).to_file(output_folder + song_name + '.jpg')
+    # for song, lyrics in song_lyrics.items():
+    #     WordCloud().generate(lyrics).to_file(output_folder + song + '.jpg')
 
-    WordCloud().generate(album_lyrics).to_file(output_folder + album_name + '.jpg')
+    # WordCloud().generate(album_lyrics).to_file(output_folder + album_name + '.jpg')
 
+    return album_lyrics
+
+total_lyrics = ''
 for album in album_links:
-    wordcloud_for_album(album)
+    total_lyrics += ' ' + wordcloud_for_album(album)
+
+WordCloud().generate(total_lyrics).to_file('output/Sabaton-lyrics.jpg')
