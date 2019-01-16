@@ -1,2 +1,2 @@
 # lyricCloud
-Wordcloud for lyrics
+Wordcloud for Sabaton lyrics
