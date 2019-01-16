@@ -12,7 +12,8 @@ if not path.exists('output'):
 html = request.urlopen(URL_ROOT + '/discography/')
 soup = BeautifulSoup(html, 'html.parser')
 
-album_links_html = soup.find('div', class_='elementor-element elementor-element-353ce1e8 elementor-column elementor-col-50 elementor-top-column').find_all('a')
+search_class = 'elementor-element elementor-element-353ce1e8 elementor-column elementor-col-50 elementor-top-column'
+album_links_html = soup.find('div',class_=search_class).find_all('a')
 album_links = [link['href'] for link in album_links_html]
 
 def wordcloud_for_album(album_link):
@@ -34,8 +35,8 @@ def wordcloud_for_album(album_link):
         print(song_name)
         html = request.urlopen(URL_ROOT + link)
         soup = BeautifulSoup(html, 'html.parser')
-        lyrics_box = soup.find_all('div', class_='elementor-text-editor elementor-clearfix')[1]
-        for br in lyrics_box.find_all('br'):
+        lyrics_box = soup.find_all('div', class_='elementor-text-editor elementor-clearfix')[1] # 2nd one is the div with the lyrics
+        for br in lyrics_box.find_all('br'): # replace <br/> with spaces
             br.replace_with(' ')
         text_blocks = lyrics_box.find_all('p')[1:] # skip the first one as it is publisher info
         lyrics = ' '.join([verse.text for verse in text_blocks])
@@ -43,10 +44,10 @@ def wordcloud_for_album(album_link):
 
     album_lyrics = ' '.join([track_lyrics for track_lyrics in song_lyrics.values()])
 
-    # for song, lyrics in song_lyrics.items():
-    #     WordCloud().generate(lyrics).to_file(output_folder + song + '.jpg')
+    for song, lyrics in song_lyrics.items():
+        WordCloud().generate(lyrics).to_file(output_folder + song + '.jpg')
 
-    # WordCloud().generate(album_lyrics).to_file(output_folder + album_name + '.jpg')
+    WordCloud().generate(album_lyrics).to_file(output_folder + album_name + '.jpg')
 
     return album_lyrics
 
